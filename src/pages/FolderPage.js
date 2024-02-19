@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/FolderPage.module.css";
-import { getRequestApi } from "../utils/requestApi";
 import LinkCardComponent from "../components/LinkCardComponent";
 import { useRequest } from "../hooks/useRequest";
 import FolderButton from "../components/FolderButton";
+import styled from "styled-components";
 
 const FolderPage = () => {
   const [folderInfo, setFolderInfo] = useState({});
-  const [links, setLinks] = useState({});
+  const [links, setLinks] = useState({ folderName: "", list: [] });
 
   const { data: linksData, request: linksRequest } = useRequest({
     url: "api/users/1/links",
@@ -17,6 +17,11 @@ const FolderPage = () => {
     url: "api/users/1/folders",
     method: "GET",
   });
+
+  function setLinkInfo(name, id) {
+    setLinks({ ...links, folderName: name });
+    linksRequest(id ? { folderId: id } : undefined);
+  }
 
   useEffect(() => {
     request();
@@ -30,7 +35,7 @@ const FolderPage = () => {
 
   useEffect(() => {
     if (linksData) {
-      setLinks(linksData);
+      setLinks({ ...links, list: linksData.data });
     }
   }, [linksData]);
 
@@ -56,24 +61,31 @@ const FolderPage = () => {
             placeholder="링크를 검색해 보세요"
           />
         </div>
-
-        <div>
-          <FolderButton name={"전체"} request={() => linksRequest()}>
-            전체
-          </FolderButton>
-          {folderInfo?.data?.map((e) => {
-            return (
-              <FolderButton
-                name={e.name}
-                request={() => linksRequest({ folderId: e.id })}
-              />
-            );
-          })}
-        </div>
-
-        {links?.data ? (
+        <FolderSortWrapper>
+          <div className="folder_wrapper">
+            <FolderButton
+              name={"전체"}
+              request={() => setLinkInfo("전체")}
+              isActive={"전체" === links?.folderName}
+            >
+              전체
+            </FolderButton>
+            {folderInfo?.data?.map((e) => {
+              return (
+                <FolderButton
+                  name={e.name}
+                  request={() => setLinkInfo(e.name, e.id)}
+                  isActive={e.name === links?.folderName}
+                />
+              );
+            })}
+          </div>
+          <button className="add-folder-btn">폴더 추가 +</button>
+        </FolderSortWrapper>
+        <p>{links?.folderName}</p>
+        {links?.list ? (
           <article className={styles.folder_card_body}>
-            {links?.data?.map((e) => {
+            {links?.list?.map((e) => {
               return (
                 <LinkCardComponent
                   imgSrc={e.image_source}
@@ -95,3 +107,26 @@ const FolderPage = () => {
 };
 
 export default FolderPage;
+
+const FolderSortWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+  .folder_wrapper {
+    display: flex;
+    gap: 8px;
+  }
+  .add-folder-btn {
+    background-color: transparent;
+    outline: none;
+    color: #6d6afe;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.3px;
+    border-width: 0px;
+    cursor: pointer;
+  }
+`;
