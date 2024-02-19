@@ -18,10 +18,10 @@ const FolderPage = () => {
     method: "GET",
   });
 
-  function setLinkInfo(name, id) {
+  const setLinkInfo = (name, id) => {
     setLinks({ ...links, folderName: name });
     linksRequest(id ? { folderId: id } : undefined);
-  }
+  };
 
   useEffect(() => {
     request();
