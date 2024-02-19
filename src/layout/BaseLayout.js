@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import styles from "../styles/BaseLayout.module.css";
-import { getRequestApi } from "../utils/requestApi";
 import { useRequest } from "../hooks/useRequest";
 
 const Header = () => {
-  const [isSignin, setIsSignin] = useState({});
+  const [signinInfo, setSigninInfo] = useState({});
 
   const { data, request } = useRequest({
     url: "api/users/1",
@@ -14,7 +13,7 @@ const Header = () => {
 
   useEffect(() => {
     if (data) {
-      setIsSignin(data);
+      setSigninInfo(data);
     }
   }, [data]);
 
@@ -23,7 +22,7 @@ const Header = () => {
     if (token) {
       request();
     } else {
-      setIsSignin(false);
+      setSigninInfo({});
     }
   }, []);
 
@@ -34,14 +33,14 @@ const Header = () => {
           <img src="images/logo.svg" className={styles.logo} />
         </a>
         <div className={styles.between_blank}></div>
-        {isSignin ? (
+        {signinInfo ? (
           <div className={styles.profile_info}>
             <img
               className={styles.profile_img}
-              src={isSignin?.data?.[0]?.image_source ?? ""}
+              src={signinInfo?.data?.[0]?.image_source ?? ""}
             />
             <p className={styles.profile_id}>
-              {isSignin?.data?.[0]?.email ?? ""}
+              {signinInfo?.data?.[0]?.email ?? ""}
             </p>
           </div>
         ) : (
