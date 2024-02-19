@@ -8,7 +8,7 @@ const Header = () => {
   const [isSignin, setIsSignin] = useState({});
 
   const { data, request } = useRequest({
-    url: "api/sample/user",
+    url: "api/users/1",
     method: "GET",
   });
 
@@ -38,9 +38,11 @@ const Header = () => {
           <div className={styles.profile_info}>
             <img
               className={styles.profile_img}
-              src={isSignin.profileImageSource}
+              src={isSignin?.data?.[0]?.image_source ?? ""}
             />
-            <p className={styles.profile_id}>{isSignin.email}</p>
+            <p className={styles.profile_id}>
+              {isSignin?.data?.[0]?.email ?? ""}
+            </p>
           </div>
         ) : (
           <a href="/signin" className={styles.signin + " " + styles.gradient}>

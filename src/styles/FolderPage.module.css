@@ -6,6 +6,19 @@
   align-items: center;
   padding-top: 113px;
 }
+.folder_bar {
+  display: flex;
+  justify-content: space-between;
+}
+.folder_search_button {
+  background-color: beige;
+}
+
+.folder_nolink {
+  text-align: center;
+  color: red;
+}
+
 .folder_user_img {
   width: 60px;
   height: 60px;
