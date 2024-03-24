@@ -4,10 +4,14 @@ import LinkCardComponent from "../components/LinkCardComponent";
 import { useRequest } from "../hooks/useRequest";
 import FolderButton from "../components/FolderButton";
 import styled from "styled-components";
+import CommonModalComponent from "../components/CommonModalComponent";
+import { useModalSetting } from "../hooks/useModalSetting";
 
 const FolderPage = () => {
   const [folderInfo, setFolderInfo] = useState({});
   const [links, setLinks] = useState({ folderName: "", list: [] });
+
+  const { show, modalOn, modalOff } = useModalSetting();
 
   const { data: linksData, request: linksRequest } = useRequest({
     url: "api/users/1/links",
@@ -42,6 +46,7 @@ const FolderPage = () => {
 
   return (
     <>
+      <CommonModalComponent show={show} modalOff={modalOff} />
       <section className={styles.folder_main_section}>
         <LinkInput>
           <img src="/images/link.png" className="link_search_img" />
@@ -49,7 +54,9 @@ const FolderPage = () => {
             className="link_search_input"
             placeholder="링크를 추가해 보세요"
           />
-          <button className="link_search_button">추가하기</button>
+          <button className="link_search_button" onClick={modalOn}>
+            추가하기
+          </button>
         </LinkInput>
       </section>
       <section className={styles.folder_info_section}>
@@ -318,5 +325,5 @@ const FolderAddButton = styled.button`
 
   position: fixed;
   bottom: 101px;
-  z-index: 50;
+  z-index: 30;
 `;
