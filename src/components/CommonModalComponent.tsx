@@ -1,15 +1,26 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { styled } from "styled-components";
 import { useRequest } from "../hooks/useRequest";
+import { FolderListType } from "@/types";
 
-const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
+type props = {
+  show: boolean;
+  modalOff: () => void;
+  modalInfo: {
+    type: string;
+    title: string;
+    folderName: string;
+    linkName: string;
+  };
+};
+const CommonModalComponent = ({ show, modalOff, modalInfo }: props) => {
   const { type, title, folderName, linkName } = modalInfo;
 
-  const { data: folderData, request } = useRequest({
+  const { data: folderData, request } = useRequest<FolderListType>({
     url: "api/users/1/folders",
     method: "GET",
   });
-  const [selectLink, setSelectLink] = useState(0);
+  const [selectLink, setSelectLink] = useState<number>(0);
 
   useEffect(() => {
     request();
@@ -114,7 +125,7 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
       return (
         <>
           <IntoArticle>
-            {folderData?.data?.map((e) => {
+            {(folderData as FolderListType)?.data?.map((e) => {
               return (
                 <IntoArticleDD
                   isActive={selectLink === e.id}
@@ -154,7 +165,7 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
   );
 };
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<{ show: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -294,7 +305,7 @@ const IntoArticle = styled.article`
   height: 172px;
   overflow-y: auto;
 `;
-const IntoArticleDD = styled.dd`
+const IntoArticleDD = styled.dd<{ isActive: boolean }>`
   display: flex;
   width: 264px;
   margin: 0;

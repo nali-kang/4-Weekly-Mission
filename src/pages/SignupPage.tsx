@@ -4,7 +4,7 @@ import {
   addEventPwHiddenBtn,
   inputFocusBorderChange,
   loginSuccess,
-} from "../utils/util";
+} from "../utils/commonUtil";
 import { postReqeustApi } from "../utils/requestApi";
 
 const SignupPage = () => {
@@ -38,32 +38,52 @@ const SignupPage = () => {
     }
   };
   // password hidden button init setting function
-  addEventPwHiddenBtn(pwHiddenBtn, pwInput, isToggleEyesPw);
-  addEventPwHiddenBtn(pwChkHiddenBtn, pwChkInput, isToggleEyesPwChk);
+  addEventPwHiddenBtn(
+    pwHiddenBtn as HTMLButtonElement,
+    pwInput as HTMLInputElement,
+    isToggleEyesPw
+  );
+  addEventPwHiddenBtn(
+    pwChkHiddenBtn as HTMLButtonElement,
+    pwChkInput as HTMLInputElement,
+    isToggleEyesPwChk
+  );
 
   // focus on
-  emailInput.addEventListener("focus", function () {
-    inputFocusBorderChange("focus_on", emailInput, emailValidText);
+  emailInput?.addEventListener("focus", function () {
+    inputFocusBorderChange(
+      "focus_on",
+      emailInput as HTMLInputElement,
+      emailValidText as HTMLElement
+    );
   });
-  pwInput.addEventListener("focus", function () {
-    inputFocusBorderChange("focus_on", pwInput, pwValidText);
+  pwInput?.addEventListener("focus", function () {
+    inputFocusBorderChange(
+      "focus_on",
+      pwInput as HTMLInputElement,
+      pwValidText as HTMLElement
+    );
   });
-  pwChkInput.addEventListener("focus", function () {
-    inputFocusBorderChange("focus_on", pwChkInput, pwChkValidText);
+  pwChkInput?.addEventListener("focus", function () {
+    inputFocusBorderChange(
+      "focus_on",
+      pwChkInput as HTMLInputElement,
+      pwChkValidText as HTMLElement
+    );
   });
 
   // focus out
-  emailInput.addEventListener("focusout", emailValidCheck);
-  pwInput.addEventListener("focusout", pwValidCheck);
+  emailInput?.addEventListener("focusout", emailValidCheck);
+  pwInput?.addEventListener("focusout", pwValidCheck);
   // 비밀번호 확인 이벤트 추가
-  pwChkInput.addEventListener("focusout", pwCheckValidCheck);
+  pwChkInput?.addEventListener("focusout", pwCheckValidCheck);
 
   // 중복 function 실행으로 인한 변수 추가 (email, pw, pwchk)
   // validOption - 정상일 경우 type = none, 오류일 경우 type = valid_error
   // return 을 이용하여 submit에서 정성/오류 체크 가능하도록 수정
   async function emailValidCheck() {
     const validOption = { type: "none", text: "" };
-    const id = emailInput.value;
+    const id = (emailInput as HTMLInputElement)?.value;
 
     if (id === "") {
       validOption.type = "valid_error";
@@ -84,8 +104,8 @@ const SignupPage = () => {
 
     inputFocusBorderChange(
       validOption.type,
-      emailInput,
-      emailValidText,
+      emailInput as HTMLInputElement,
+      emailValidText as HTMLElement,
       validOption.text
     );
 
@@ -95,18 +115,18 @@ const SignupPage = () => {
   function pwValidCheck() {
     pwCheckValidCheck();
     const validOption = { type: "none", text: "" };
-    if (pwInput.value === "") {
+    if ((pwInput as HTMLInputElement).value === "") {
       validOption.type = "valid_error";
       validOption.text = "비밀번호를 입력해 주세요.";
-    } else if (!pwRegex.test(pwInput.value)) {
+    } else if (!pwRegex.test((pwInput as HTMLInputElement).value)) {
       validOption.type = "valid_error";
       validOption.text = "비밀번호는 영문, 숫자 조합 8자 이상 입력해 주세요.";
     }
 
     inputFocusBorderChange(
       validOption.type,
-      pwInput,
-      pwValidText,
+      pwInput as HTMLInputElement,
+      pwValidText as HTMLElement,
       validOption.text
     );
 
@@ -116,25 +136,28 @@ const SignupPage = () => {
   function pwCheckValidCheck() {
     const validOption = { type: "none", text: "" };
 
-    if (pwChkInput.value === "") {
+    if ((pwChkInput as HTMLInputElement).value === "") {
       validOption.type = "valid_error";
       validOption.text = "비밀번호를 입력해 주세요.";
-    } else if (pwChkInput.value !== pwInput.value) {
+    } else if (
+      (pwChkInput as HTMLInputElement).value !==
+      (pwInput as HTMLInputElement).value
+    ) {
       validOption.type = "valid_error";
       validOption.text = "비밀번호가 일치하지 않아요.";
     }
 
     inputFocusBorderChange(
       validOption.type,
-      pwChkInput,
-      pwChkValidText,
+      pwChkInput as HTMLInputElement,
+      pwChkValidText as HTMLElement,
       validOption.text
     );
     return validOption;
   }
 
   // form submit (enter, submit click)
-  signupForm.addEventListener("submit", async function (e) {
+  signupForm?.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     // 정상/오류 사항을 한번 더 확인하기 위해 함수 호출
@@ -151,8 +174,8 @@ const SignupPage = () => {
       pwOption.type === "none" &&
       pwChkOption.type === "none"
     ) {
-      const id = emailInput.value;
-      const pw = pwInput.value;
+      const id = (emailInput as HTMLInputElement).value;
+      const pw = (pwInput as HTMLInputElement).value;
 
       postReqeustApi("api/sign-up", {
         email: id,
@@ -171,43 +194,43 @@ const SignupPage = () => {
   return (
     <main>
       <form id="signup-form">
-        <div class="signup_body">
-          <header class="signup_header">
+        <div className="signup_body">
+          <header className="signup_header">
             <a href="/">
-              <img src="images/logo.svg" class="logo" />
+              <img src="images/logo.svg" className="logo" />
             </a>
             <p>
               이미 회원이신가요?
-              <a class="signin" href="/signin.html">
+              <a className="signin" href="/signin.html">
                 로그인 하기
               </a>
             </p>
           </header>
-          <div class="signup_info">
+          <div className="signup_info">
             <div>
-              <label for="signup_email"> 이메일</label>
+              <label htmlFor="signup_email"> 이메일</label>
               <input id="signup-email" name="email" type="text" />
-              <p class="valid_text" id="email-valid-text"></p>
+              <p className="valid_text" id="email-valid-text"></p>
             </div>
             <div>
-              <label for="signup_password"> 비밀번호</label>
+              <label htmlFor="signup_password"> 비밀번호</label>
               <input id="signup-password" name="password" type="password" />
               <button id="pw-hidden-btn" type="button"></button>
-              <p class="valid_text" id="pw-valid-text"></p>
+              <p className="valid_text" id="pw-valid-text"></p>
             </div>
             <div>
-              <label for="signup_password-chk"> 비밀번호 확인</label>
+              <label htmlFor="signup_password-chk"> 비밀번호 확인</label>
               <input id="signup-password-chk" name="password" type="password" />
               <button id="pw-chk-hidden-btn" type="button"></button>
-              <p class="valid_text" id="pw-chk-valid-text"></p>
+              <p className="valid_text" id="pw-chk-valid-text"></p>
             </div>
           </div>
-          <button type="submit" class="signup_button">
+          <button type="submit" className="signup_button">
             회원가입
           </button>
         </div>
-        <div class="signup_body">
-          <div class="social_signup">
+        <div className="signup_body">
+          <div className="social_signup">
             <p>다른 방식으로 가입하기</p>
             <div>
               <a href="https://www.google.com/">

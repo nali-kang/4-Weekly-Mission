@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "../styles/SigninPage.module.css";
 
-import { loginSuccess } from "../utils/util";
+import { loginSuccess } from "../utils/commonUtil";
 import { postReqeustApi } from "../utils/requestApi";
 import SignInfoInputComponent from "../components/SignInfoInputComponent";
 
@@ -17,7 +17,7 @@ const SigninPage = () => {
   const [emailErrorText, setEmailErrorText] = useState("");
   const [pwErrorText, setPwErrorText] = useState("");
 
-  const validCheck = (name, value) => {
+  const validCheck = (name: string, value: string) => {
     let isValid = false;
     if (name === "email") {
       if (value === "") {
@@ -42,7 +42,7 @@ const SigninPage = () => {
     return isValid;
   };
 
-  const changeSigninInfo = (e) => {
+  const changeSigninInfo = (e: any) => {
     const isValid = validCheck(e.target.name, e.target.value);
 
     setSigninInfo({
@@ -51,7 +51,7 @@ const SigninPage = () => {
     });
   };
 
-  const signinFormSubmit = (e) => {
+  const signinFormSubmit = (e: any) => {
     e.preventDefault();
     if (signinInfo.email && signinInfo.password) {
       postReqeustApi("api/sign-in", {
@@ -85,7 +85,7 @@ const SigninPage = () => {
           </header>
           <div className={styles.signin_info}>
             <div>
-              <label for="signin_email"> 이메일</label>
+              <label htmlFor="signin_email"> 이메일</label>
               <SignInfoInputComponent
                 name={"email"}
                 changeEvent={changeSigninInfo}
@@ -94,7 +94,7 @@ const SigninPage = () => {
               />
             </div>
             <div>
-              <label for="signin_password"> 비밀번호</label>
+              <label htmlFor="signin_password"> 비밀번호</label>
               <SignInfoInputComponent
                 name={"password"}
                 changeEvent={changeSigninInfo}

@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import styles from "../styles/FolderPage.module.css";
-import { formatDate, setBeforeDate } from "../utils/util";
+import { formatDate, setBeforeDate } from "../utils/commonUtil";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import CardDropdownComponent from "./CardDropdownComponent";
+
+type props = {
+  imgSrc?: string;
+  createdAt: string;
+  desc?: string;
+  url: string;
+  type?: "default" | "static";
+};
 
 const LinkCardComponent = ({
   imgSrc,
@@ -11,7 +19,7 @@ const LinkCardComponent = ({
   desc,
   url,
   type = "default",
-}) => {
+}: props) => {
   const [show, setShow] = useState(false);
 
   const curDate = new Date(createdAt);

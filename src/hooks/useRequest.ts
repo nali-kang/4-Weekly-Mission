@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
 
-export const useRequest = ({ url, method }) => {
-  const [data, setData] = useState({});
+export const useRequest = <T>({
+  url,
+  method,
+}: {
+  url: string;
+  method: "GET" | "POST" | "PATCH" | "DELETE";
+}) => {
+  const [data, setData] = useState<T | {}>({});
 
-  const requestFetch = (body) => {
+  const requestFetch = (body?: Record<string, any>) => {
     let apiUrl = url;
     if (method === "GET") {
       const query = body
@@ -25,7 +31,7 @@ export const useRequest = ({ url, method }) => {
         if (response.status === 200) {
           return response.json();
         } else {
-          throw Error(response.status);
+          throw Error(response.status + "");
         }
       })
       .then((result) => {
@@ -33,5 +39,5 @@ export const useRequest = ({ url, method }) => {
       });
   };
 
-  return { data, request: (body) => requestFetch(body) };
+  return { data, request: (body?: Record<string, any>) => requestFetch(body) };
 };

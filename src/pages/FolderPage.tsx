@@ -6,20 +6,25 @@ import FolderButton from "../components/FolderButton";
 import styled from "styled-components";
 import CommonModalComponent from "../components/CommonModalComponent";
 import { useModalSetting } from "../hooks/useModalSetting";
+import { FolderListType, LinkListType, LinkType } from "@/types";
 
+interface linksType {
+  folderName: string;
+  list?: LinkType[];
+}
 const FolderPage = () => {
-  const [folderInfo, setFolderInfo] = useState({});
+  const [folderInfo, setFolderInfo] = useState<FolderListType>({});
   const [modalType, setModalType] = useState({
     type: "",
     title: "",
     folderName: "",
     linkName: "",
   });
-  const [links, setLinks] = useState({ folderName: "", list: [] });
+  const [links, setLinks] = useState<linksType>({ folderName: "", list: [] });
 
   const { show, modalOn, modalOff } = useModalSetting();
 
-  const { data: linksData, request: linksRequest } = useRequest({
+  const { data: linksData, request: linksRequest } = useRequest<LinkListType>({
     url: "api/users/1/links",
     method: "GET",
   });
@@ -28,7 +33,7 @@ const FolderPage = () => {
     method: "GET",
   });
 
-  const setLinkInfo = (name, id) => {
+  const setLinkInfo = (name: string, id?: number) => {
     setLinks({ ...links, folderName: name });
     linksRequest(id ? { folderId: id } : undefined);
   };
@@ -46,7 +51,7 @@ const FolderPage = () => {
 
   useEffect(() => {
     if (linksData) {
-      setLinks({ ...links, list: linksData.data });
+      setLinks({ ...links, list: (linksData as LinkListType).data });
     }
   }, [linksData]);
 
@@ -79,19 +84,19 @@ const FolderPage = () => {
           <FolderSortWrapper>
             <div className="folder_wrapper">
               <FolderButton
-                name={"전체"}
                 request={() => setLinkInfo("전체")}
                 isActive={"전체" === links?.folderName}
               >
-                전체
+                {"전체"}
               </FolderButton>
               {folderInfo?.data?.map((e) => {
                 return (
                   <FolderButton
-                    name={e.name}
                     request={() => setLinkInfo(e.name, e.id)}
                     isActive={e.name === links?.folderName}
-                  />
+                  >
+                    {e.name}
+                  </FolderButton>
                 );
               })}
             </div>

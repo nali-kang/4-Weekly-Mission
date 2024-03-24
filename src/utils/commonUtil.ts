@@ -1,5 +1,10 @@
 // focus 및 action에 따른 input border style changer
-export function inputFocusBorderChange(type, inputElm, textElm, text = "") {
+export function inputFocusBorderChange(
+  type: string,
+  inputElm: HTMLInputElement,
+  textElm: HTMLElement,
+  text: string = ""
+) {
   let borderStyle = "1px solid #CCD5E3";
   if (type === "focus_on") {
     borderStyle = "1px solid #6D6AFE";
@@ -12,7 +17,11 @@ export function inputFocusBorderChange(type, inputElm, textElm, text = "") {
 }
 
 // hidden button initial setting
-export function addEventPwHiddenBtn(pwHiddenBtn, pwInput, toggle) {
+export function addEventPwHiddenBtn(
+  pwHiddenBtn: HTMLButtonElement,
+  pwInput: HTMLInputElement,
+  toggle: boolean
+) {
   pwHiddenBtn.innerHTML = '<img src="./images/eye-off.svg" />';
   // 심화 : pw eye button 클릭 이벤트 추가 > type - password, text toggle event
   pwHiddenBtn.addEventListener("click", function (e) {
@@ -28,7 +37,10 @@ export function addEventPwHiddenBtn(pwHiddenBtn, pwInput, toggle) {
   });
 }
 
-export function loginSuccess(data) {
+export function loginSuccess(data: {
+  accessToken: string;
+  refreshToken: string;
+}) {
   const accessToken = data?.accessToken;
   const refreshToken = data?.refreshToken;
   // 로컬스토리지에 저장
@@ -38,7 +50,7 @@ export function loginSuccess(data) {
   window.location.href = "/folder";
 }
 
-export const formatDate = (date) => {
+export const formatDate = (date: Date) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -57,7 +69,7 @@ export const formatDate = (date) => {
   12달 이상은 “1 year ago”
   OO달 이상은 “{OO/12(소수점 버린 정수)} years ago”
 */
-export const setBeforeDate = (date) => {
+export const setBeforeDate = (date: Date) => {
   const currentDate = new Date();
   const subTime = currentDate.getTime() - date.getTime();
 

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
 export const useModalSetting = () => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<boolean>(false);
 
   const modalOn = useCallback(() => {
     if (!show) {

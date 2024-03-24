@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import styles from "../styles/BaseLayout.module.css";
 import { useRequest } from "../hooks/useRequest";
+import { OwnerListType } from "@/types";
 
 const Header = () => {
-  const [signinInfo, setSigninInfo] = useState({});
+  const [signinInfo, setSigninInfo] = useState<OwnerListType>({});
   const location = useLocation();
 
-  const { data, request } = useRequest({
+  const { data, request } = useRequest<OwnerListType>({
     url: "api/users/1",
     method: "GET",
   });

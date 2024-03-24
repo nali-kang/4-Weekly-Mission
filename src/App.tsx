@@ -12,9 +12,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<BaseLayout />}>
-          <Route exact path="/" element={<MainPage />}></Route>
-          <Route exact path="/shared" element={<SharedPage />}></Route>
-          <Route exact path="/folder" element={<FolderPage />}></Route>
+          <Route path="/" element={<MainPage />}></Route>
+          <Route path="/shared" element={<SharedPage />}></Route>
+          <Route path="/folder" element={<FolderPage />}></Route>
         </Route>
         <Route element={<SigninPage />} path="/signin" />
         <Route element={<SignupPage />} path="/signup" />

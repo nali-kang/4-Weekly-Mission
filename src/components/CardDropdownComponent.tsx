@@ -3,7 +3,12 @@ import { styled } from "styled-components";
 import { useModalSetting } from "../hooks/useModalSetting";
 import CommonModalComponent from "./CommonModalComponent";
 
-const CardDropdownComponent = ({ show, url }) => {
+type props = {
+  show: boolean;
+  url: string;
+};
+
+const CardDropdownComponent = ({ show, url }: props) => {
   const [modalType, setModalType] = useState({
     type: "",
     title: "",

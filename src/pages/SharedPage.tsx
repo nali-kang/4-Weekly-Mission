@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/FolderPage.module.css";
-import { getRequestApi } from "../utils/requestApi";
 import LinkCardComponent from "../components/LinkCardComponent";
 import { useRequest } from "../hooks/useRequest";
-import FolderButton from "../components/FolderButton";
+import { folderType } from "@/types";
 
 const SharedPage = () => {
-  const [folderInfo, setFolderInfo] = useState({});
+  const [folderInfo, setFolderInfo] = useState<folderType>({});
 
   const { data, request } = useRequest({
     url: "api/sample/folder",

@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/SigninPage.module.css";
 
+type props = {
+  name: string;
+  changeEvent: (e: any) => void;
+  validText: string;
+  setValidText: React.Dispatch<React.SetStateAction<string>>;
+  pwType?: boolean;
+};
+
 const SignInfoInputComponent = ({
   name,
   changeEvent,
   validText,
   setValidText,
   pwType = false,
-}) => {
+}: props) => {
   const [inputStyle, setInputStyle] = useState({});
   const [isFocus, setIsFoucs] = useState(false);
   const [isHidden, setIsHidden] = useState(true);

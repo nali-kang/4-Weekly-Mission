@@ -1,15 +1,21 @@
 import { styled } from "styled-components";
 
-const FolderButton = ({ name, request, isActive }) => {
+type props = {
+  children: React.ReactNode;
+  request: () => void;
+  isActive: boolean;
+};
+
+const FolderButton = ({ children, request, isActive }: props) => {
   return (
     <ButtonStyle onClick={() => request()} isActive={isActive}>
-      {name}
+      {children}
     </ButtonStyle>
   );
 };
 export default FolderButton;
 
-const ButtonStyle = styled.button`
+const ButtonStyle = styled.button<{ isActive: boolean }>`
   padding: 8px 12px;
   align-items: center;
   border-radius: 5px;
