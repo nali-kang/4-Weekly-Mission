@@ -55,6 +55,7 @@ const SharedPage = () => {
                   createdAt={e.createdAt}
                   desc={e.description}
                   url={e.url}
+                  type={"static"}
                 />
               );
             })}

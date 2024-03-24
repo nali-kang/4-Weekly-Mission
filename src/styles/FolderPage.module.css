@@ -79,6 +79,14 @@
 }
 .card_link {
   text-decoration: none;
+  position: relative;
+}
+.card_link .link_absolute_div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 340px;
+  height: 334px;
 }
 .folder_card {
   border-radius: 15px;
@@ -88,6 +96,7 @@
   flex-direction: column;
   box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.08);
   background-color: white;
+  position: relative;
 }
 .folder_card:hover {
   overflow: hidden;

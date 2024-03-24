@@ -1,9 +1,18 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { styled } from "styled-components";
+import { useRequest } from "../hooks/useRequest";
 
 const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
   const { type, title, folderName, linkName } = modalInfo;
+
+  const { data: folderData, request } = useRequest({
+    url: "api/users/1/folders",
+    method: "GET",
+  });
+  const [selectLink, setSelectLink] = useState(0);
+
   useEffect(() => {
+    request();
     if (show) {
       // eslint-disable-next-line no-restricted-globals
       history.pushState(null, "", location.href);
@@ -21,6 +30,7 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
       window.removeEventListener("popstate", modalOff);
     };
   }, [show]);
+
   const customTitle = useMemo(() => {
     if (type === "folder_rename" || type === "folder_add") {
       return (
@@ -45,13 +55,14 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
         </FolderHeader>
       );
     }
-  }, [type]);
+  }, [type, title, folderName, linkName]);
+
   const info = useMemo(() => {
     if (type === "folder_add") {
       return (
         <FolderArticle>
           <input placeholder="내용 입력" />
-          <button>추가하기</button>
+          <AddButton>추가하기</AddButton>
         </FolderArticle>
       );
     }
@@ -59,7 +70,7 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
       return (
         <FolderArticle>
           <input placeholder="내용 입력" defaultValue={folderName} />
-          <button>변경하기</button>
+          <AddButton>변경하기</AddButton>
         </FolderArticle>
       );
     }
@@ -100,9 +111,35 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
       return <DeleteButton>삭제하기</DeleteButton>;
     }
     if (type === "into_folder") {
-      return "폴더에 추가";
+      return (
+        <>
+          <IntoArticle>
+            {folderData?.data?.map((e) => {
+              return (
+                <IntoArticleDD
+                  isActive={selectLink === e.id}
+                  onClick={() => {
+                    setSelectLink(e.id);
+                  }}
+                >
+                  <p className="link_name">
+                    <span>{e.name}</span>
+                    <span className="count">{e.link.count}개 링크</span>
+                  </p>
+                  {selectLink === e.id ? (
+                    <img src="/images/link_check.png" />
+                  ) : (
+                    <></>
+                  )}
+                </IntoArticleDD>
+              );
+            })}
+          </IntoArticle>
+          <AddButton>추가하기</AddButton>
+        </>
+      );
     }
-  });
+  }, [type, folderData, selectLink]);
 
   return (
     <ModalContainer show={show}>
@@ -118,7 +155,7 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }) => {
 };
 
 const ModalContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.4);
@@ -192,25 +229,6 @@ const FolderArticle = styled.article`
       color: var(--Linkbrary-gray60, #9fa6b2);
     }
   }
-  button {
-    display: flex;
-    padding: 16px 20px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
-    border: 0;
-    background: var(
-      --gra-purpleblue-to-skyblue,
-      linear-gradient(91deg, #6d6afe 0.12%, #6ae3fe 101.84%)
-    );
-    color: var(--Grey-Light, #f5f5f5);
-    font-family: Pretendard;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    cursor: pointer;
-  }
 `;
 const ShareArticle = styled.article`
   display: flex;
@@ -246,5 +264,76 @@ const DeleteButton = styled.button`
   font-weight: 600;
   line-height: normal;
   width: 100%;
+`;
+const AddButton = styled.button`
+  display: flex;
+  padding: 16px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 0;
+  background: var(
+    --gra-purpleblue-to-skyblue,
+    linear-gradient(91deg, #6d6afe 0.12%, #6ae3fe 101.84%)
+  );
+  color: var(--Grey-Light, #f5f5f5);
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  cursor: pointer;
+  width: 100%;
+`;
+const IntoArticle = styled.article`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  width: 100%;
+  height: 172px;
+  overflow-y: auto;
+`;
+const IntoArticleDD = styled.dd`
+  display: flex;
+  width: 264px;
+  margin: 0;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: start;
+  justify-content: space-between;
+
+  background: ${(props) => (props.isActive ? "#f0f6ff" : "transparent")};
+  .link_name {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: ${(props) => (props.isActive ? "#6d6afe" : "#373740")};
+    /* Linkbrary/body1-regular */
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+  }
+  .count {
+    color: var(--Linkbrary-gray60, #9fa6b2);
+    /* Linkbrary/body2-regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  &:hover {
+    background: var(--Linkbrary-bg, #f0f6ff);
+    .link_name {
+      color: var(--Linkbrary-primary-color, #6d6afe);
+    }
+  }
+  img {
+    width: 14px;
+    height: 14px;
+  }
 `;
 export default CommonModalComponent;
