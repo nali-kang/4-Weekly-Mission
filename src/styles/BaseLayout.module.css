@@ -13,6 +13,14 @@
   background-color: var(--palette-grey-5);
   z-index: 10;
 }
+.gnb_folder {
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--palette-grey-5);
+  z-index: 10;
+}
 .profile_info {
   display: flex;
   gap: 6px;
@@ -95,6 +103,10 @@
   .gnb {
     padding: 13px 32px;
   }
+
+  .gnb_folder {
+    padding: 13px 32px;
+  }
   .menu {
     justify-content: space-between;
   }
@@ -134,6 +146,9 @@
   .gnb {
     padding: 20px 32px;
   }
+  .gnb_folder {
+    padding: 20px 32px;
+  }
   .menu {
     justify-content: center;
   }
@@ -171,6 +186,9 @@
 }
 @media (min-width: 1200px) {
   .gnb {
+    padding: 20px 200px;
+  }
+  .gnb_folder {
     padding: 20px 200px;
   }
   .menu {

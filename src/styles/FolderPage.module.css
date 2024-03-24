@@ -1,10 +1,10 @@
 .folder_main_section {
-  height: 244px;
+  display: flex;
+  padding: 60px 320px 90px 320px;
   background-color: var(--palette-grey-5);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 113px;
 }
 .folder_bar {
   display: flex;
@@ -15,8 +15,12 @@
 }
 
 .folder_nolink {
-  text-align: center;
-  color: red;
+  display: flex;
+  width: 1060px;
+  height: 100px;
+  padding: 41px 0px 35px 0px;
+  justify-content: center;
+  align-items: center;
 }
 
 .folder_user_img {
@@ -40,7 +44,6 @@
   width: 1060px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
 }
 .folder_search_input_box {
   border: none;
@@ -50,6 +53,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  margin-bottom: 40px;
 }
 .folder_search_input {
   border: none;
@@ -134,8 +138,7 @@
 
 @media (max-width: 767px) {
   .folder_main_section {
-    height: 161px;
-    padding-top: 73px;
+    padding: 24px 32px 40px 32px;
   }
 
   .folder_user_img {
@@ -162,6 +165,9 @@
     width: 100%;
     box-sizing: border-box;
   }
+  .folder_search_input {
+    font-size: 14px;
+  }
   .folder_card_body {
     grid-template-columns: 1fr;
   }
@@ -178,6 +184,9 @@
 }
 
 @media (min-width: 768px) and (max-width: 1123px) {
+  .folder_main_section {
+    padding: 60px 90px;
+  }
   .folder_info_section {
     margin: 40px auto 0px;
     width: 704px;

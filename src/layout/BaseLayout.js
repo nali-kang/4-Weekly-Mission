@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import styles from "../styles/BaseLayout.module.css";
 import { useRequest } from "../hooks/useRequest";
 
 const Header = () => {
   const [signinInfo, setSigninInfo] = useState({});
+  const location = useLocation();
 
   const { data, request } = useRequest({
     url: "api/users/1",
@@ -27,7 +28,11 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={styles.gnb}>
+    <header
+      className={
+        location.pathname.indexOf("folder") > 0 ? styles.gnb_folder : styles.gnb
+      }
+    >
       <div className={styles.menu}>
         <a href="/">
           <img src="images/logo.svg" className={styles.logo} />
