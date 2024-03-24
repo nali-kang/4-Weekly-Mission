@@ -9,6 +9,12 @@ import { useModalSetting } from "../hooks/useModalSetting";
 
 const FolderPage = () => {
   const [folderInfo, setFolderInfo] = useState({});
+  const [modalType, setModalType] = useState({
+    type: "",
+    title: "",
+    folderName: "",
+    linkName: "",
+  });
   const [links, setLinks] = useState({ folderName: "", list: [] });
 
   const { show, modalOn, modalOff } = useModalSetting();
@@ -46,7 +52,11 @@ const FolderPage = () => {
 
   return (
     <>
-      <CommonModalComponent show={show} modalOff={modalOff} />
+      <CommonModalComponent
+        show={show}
+        modalOff={modalOff}
+        modalInfo={modalType}
+      />
       <section className={styles.folder_main_section}>
         <LinkInput>
           <img src="/images/link.png" className="link_search_img" />
@@ -54,9 +64,7 @@ const FolderPage = () => {
             className="link_search_input"
             placeholder="링크를 추가해 보세요"
           />
-          <button className="link_search_button" onClick={modalOn}>
-            추가하기
-          </button>
+          <button className="link_search_button">추가하기</button>
         </LinkInput>
       </section>
       <section className={styles.folder_info_section}>
@@ -87,7 +95,20 @@ const FolderPage = () => {
                 );
               })}
             </div>
-            <button className="add-folder-btn">폴더 추가 +</button>
+            <button
+              className="add-folder-btn"
+              onClick={() => {
+                setModalType({
+                  title: "폴더 추가",
+                  type: "folder_add",
+                  folderName: "",
+                  linkName: "",
+                });
+                modalOn();
+              }}
+            >
+              폴더 추가 +
+            </button>
           </FolderSortWrapper>
         )}
 
@@ -98,15 +119,45 @@ const FolderPage = () => {
               <></>
             ) : (
               <div className="info_button">
-                <button>
+                <button
+                  onClick={() => {
+                    setModalType({
+                      title: "폴더 공유",
+                      type: "folder_share",
+                      folderName: links.folderName,
+                      linkName: "",
+                    });
+                    modalOn();
+                  }}
+                >
                   <img src="/images/share.png" />
                   <span>공유</span>
                 </button>
-                <button>
+                <button
+                  onClick={() => {
+                    setModalType({
+                      title: "폴더 이름 변경",
+                      type: "folder_rename",
+                      folderName: links.folderName,
+                      linkName: "",
+                    });
+                    modalOn();
+                  }}
+                >
                   <img src="/images/pen.png" />
                   <span>이름변경</span>
                 </button>
-                <button>
+                <button
+                  onClick={() => {
+                    setModalType({
+                      title: "폴더 삭제",
+                      type: "folder_delete",
+                      folderName: links.folderName,
+                      linkName: "",
+                    });
+                    modalOn();
+                  }}
+                >
                   <img src="/images/delete.png" />
                   <span>삭제</span>
                 </button>
@@ -134,7 +185,19 @@ const FolderPage = () => {
           </div>
         )}
         {/* <Stylebutton color={color} /> */}
-        <FolderAddButton>폴더 추가 +</FolderAddButton>
+        <FolderAddButton
+          onClick={() => {
+            setModalType({
+              title: "폴더 추가",
+              type: "folder_add",
+              folderName: "",
+              linkName: "",
+            });
+            modalOn();
+          }}
+        >
+          폴더 추가 +
+        </FolderAddButton>
       </section>
     </>
   );
@@ -181,9 +244,9 @@ const LinkInfo = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  width: 100%;
 
   @media (max-width: 767px) {
-    width: 100%;
     flex-direction: column;
     align-items: start;
     gap: 12px;
