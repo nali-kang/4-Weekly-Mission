@@ -20,10 +20,12 @@ const FolderPage = () => {
     folderName: "",
     linkName: "",
   });
+
   const [links, setLinks] = useState<ILinksList>({
     folderName: "",
     list: [] as LinkItem[],
   });
+
   const [search, setSearch] = useState<string>("");
 
   const { show, modalOn, modalOff } = useModalSetting();
