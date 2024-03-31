@@ -1,13 +1,14 @@
-export default function RootLayout({
-  // Layouts must accept a children prop.
-  // This will be populated with nested layouts or pages
-  children,
-}: {
+import "../styles/globals.css";
+
+type Props = {
   children: React.ReactNode;
-}) {
+};
+const RootLayout = ({ children }: Props) => {
   return (
-    <html lang="en">
+    <html>
       <body>{children}</body>
     </html>
   );
-}
+};
+
+export default RootLayout;
