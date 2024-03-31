@@ -46,6 +46,7 @@
   flex-direction: column;
 }
 .folder_search_input_box {
+  position: relative;
   border: none;
   border-radius: 10px;
   padding: 15px 16px;
@@ -173,6 +174,7 @@
   .folder_search_input_box {
     width: 100%;
     box-sizing: border-box;
+    margin-bottom: 32px;
   }
   .folder_search_input {
     font-size: 14px;
