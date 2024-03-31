@@ -125,9 +125,10 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }: props) => {
       return (
         <>
           <IntoArticle>
-            {folderData?.data?.map((e) => {
+            {folderData?.data?.map((e, i) => {
               return (
                 <IntoArticleDD
+                  key={e.id + i}
                   isActive={selectLink === e.id}
                   onClick={() => {
                     setSelectLink(e.id);
