@@ -19,5 +19,7 @@
       "@/*": ["src/*"],
       "@/utils/*": ["src/utils/*"]
     }
-  }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

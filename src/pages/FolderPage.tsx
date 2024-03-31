@@ -6,29 +6,32 @@ import FolderButton from "../components/FolderButton";
 import styled from "styled-components";
 import CommonModalComponent from "../components/CommonModalComponent";
 import { useModalSetting } from "../hooks/useModalSetting";
-import { FolderListType, LinkListType, LinkType } from "@/types";
+import { FolderList, LinkList, LinkItem } from "@/types";
 
-interface linksType {
+interface ILinksList {
   folderName: string;
-  list?: LinkType[];
+  list?: LinkItem[];
 }
 const FolderPage = () => {
-  const [folderInfo, setFolderInfo] = useState<FolderListType>({});
   const [modalType, setModalType] = useState({
     type: "",
     title: "",
     folderName: "",
     linkName: "",
   });
-  const [links, setLinks] = useState<linksType>({ folderName: "", list: [] });
+  const [links, setLinks] = useState<ILinksList>({
+    folderName: "",
+    list: [] as LinkItem[],
+  });
+  const [search, setSearch] = useState<string>("");
 
   const { show, modalOn, modalOff } = useModalSetting();
 
-  const { data: linksData, request: linksRequest } = useRequest<LinkListType>({
+  const { data: linksData, request: linksRequest } = useRequest<LinkList>({
     url: "api/users/1/links",
     method: "GET",
   });
-  const { data, request } = useRequest({
+  const { data: folderInfo, request } = useRequest<FolderList>({
     url: "api/users/1/folders",
     method: "GET",
   });
@@ -43,15 +46,14 @@ const FolderPage = () => {
   }, []);
 
   useEffect(() => {
-    if (data) {
-      setFolderInfo(data);
+    if (folderInfo) {
       setLinkInfo("전체");
     }
-  }, [data]);
+  }, [folderInfo]);
 
   useEffect(() => {
     if (linksData) {
-      setLinks({ ...links, list: (linksData as LinkListType).data });
+      setLinks({ ...links, list: linksData.data });
     }
   }, [linksData]);
 
@@ -78,8 +80,20 @@ const FolderPage = () => {
           <input
             className={styles.folder_search_input}
             placeholder="링크를 검색해 보세요"
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
           />
+          {search !== "" && (
+            <SearchCloseButton onClick={() => setSearch("")}>
+              <img src="/images/search_close.png" />
+            </SearchCloseButton>
+          )}
         </div>
+        {search !== "" && (
+          <SearchText>
+            <span>{search}</span>으로 검색한 결과입니다.
+          </SearchText>
+        )}
         {folderInfo?.data && (
           <FolderSortWrapper>
             <div className="folder_wrapper">
@@ -173,16 +187,24 @@ const FolderPage = () => {
 
         {links?.list && links?.list.length > 0 ? (
           <article className={styles.folder_card_body}>
-            {links?.list?.map((e) => {
-              return (
-                <LinkCardComponent
-                  imgSrc={e.image_source}
-                  createdAt={e.created_at}
-                  desc={e.description}
-                  url={e.url}
-                />
-              );
-            })}
+            {links?.list
+              ?.filter((e) => {
+                return (
+                  e.url.indexOf(search) > -1 ||
+                  (e.title && e.title.indexOf(search) > -1) ||
+                  (e.description && e.description.indexOf(search) > -1)
+                );
+              })
+              .map((e) => {
+                return (
+                  <LinkCardComponent
+                    imgSrc={e.image_source}
+                    createdAt={e.created_at}
+                    desc={e.description}
+                    url={e.url}
+                  />
+                );
+              })}
           </article>
         ) : (
           <div>
@@ -394,4 +416,34 @@ const FolderAddButton = styled.button`
   position: fixed;
   bottom: 101px;
   z-index: 30;
+`;
+const SearchText = styled.strong`
+  margin-bottom: 40px;
+  width: 100%;
+  color: #9fa6b2;
+
+  /* Linkbrary/h2-semibold */
+  font-family: Pretendard;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: -0.2px;
+  word-break: break-all;
+  span {
+    color: #373740;
+  }
+  @media (max-width: 767px) {
+    margin-bottom: 32px;
+    font-size: 24px;
+  }
+`;
+
+const SearchCloseButton = styled.button`
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  width: 16px;
+  height: 16px;
 `;

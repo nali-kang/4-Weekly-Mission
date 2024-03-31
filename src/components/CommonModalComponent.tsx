@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { styled } from "styled-components";
 import { useRequest } from "../hooks/useRequest";
-import { FolderListType } from "@/types";
+import { FolderList } from "@/types";
 
 type props = {
   show: boolean;
@@ -16,15 +16,15 @@ type props = {
 const CommonModalComponent = ({ show, modalOff, modalInfo }: props) => {
   const { type, title, folderName, linkName } = modalInfo;
 
-  const { data: folderData, request } = useRequest<FolderListType>({
+  const { data: folderData, request } = useRequest<FolderList>({
     url: "api/users/1/folders",
     method: "GET",
   });
   const [selectLink, setSelectLink] = useState<number>(0);
 
   useEffect(() => {
-    request();
     if (show) {
+      request();
       // eslint-disable-next-line no-restricted-globals
       history.pushState(null, "", location.href);
       window.addEventListener("popstate", modalOff);
@@ -125,7 +125,7 @@ const CommonModalComponent = ({ show, modalOff, modalInfo }: props) => {
       return (
         <>
           <IntoArticle>
-            {(folderData as FolderListType)?.data?.map((e) => {
+            {folderData?.data?.map((e) => {
               return (
                 <IntoArticleDD
                   isActive={selectLink === e.id}

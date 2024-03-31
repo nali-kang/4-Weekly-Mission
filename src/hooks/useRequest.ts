@@ -8,7 +8,7 @@ export const useRequest = <T>({
   url: string;
   method: "GET" | "POST" | "PATCH" | "DELETE";
 }) => {
-  const [data, setData] = useState<T | {}>({});
+  const [data, setData] = useState<T>({} as T);
 
   const requestFetch = (body?: Record<string, any>) => {
     let apiUrl = url;

@@ -1,22 +1,25 @@
-export interface folderType {
-  folder?: folderInfoType;
+/*
+ * 샘플 API용 타입정의
+ */
+export interface SampleFolder {
+  folder?: SampleFolderInfo;
 }
 
-export interface folderInfoType {
+export interface SampleFolderInfo {
   count: number;
   id: number;
-  links: linkType[]; // Link Type으로 변경
+  links: SampleLink[]; // Link Type으로 변경
   name: string;
-  owner: ownerType;
+  owner: SampleOwner;
 }
 
-export interface ownerType {
+export interface SampleOwner {
   id: number;
   name: string;
   profileImageSource: string;
 }
 
-export interface linkType {
+export interface SampleLink {
   createdAt: string;
   description: string;
   id: number;
@@ -25,11 +28,11 @@ export interface linkType {
   url: string;
 }
 
-export interface LinkListType {
-  data?: LinkType[];
+export interface LinkList {
+  data?: LinkItem[];
 }
 
-export interface LinkType {
+export interface LinkItem {
   id: number;
   created_at: string;
   updated_at?: string;
@@ -40,11 +43,11 @@ export interface LinkType {
   folder_id?: number;
 }
 
-export interface FolderListType {
-  data?: FolderType[];
+export interface FolderList {
+  data?: FolderItem[];
 }
 
-export interface FolderType {
+export interface FolderItem {
   id: number;
   created_at: string;
   name: string;
@@ -55,11 +58,11 @@ export interface FolderType {
   };
 }
 
-export interface OwnerListType {
-  data?: OwnerType[];
+export interface OwnerList {
+  data?: OwnerInfo[];
 }
 
-export interface OwnerType {
+export interface OwnerInfo {
   id: number;
   created_at: string;
   name: string;
